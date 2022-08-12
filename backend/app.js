@@ -5,6 +5,9 @@ const morgan = require("morgan");
 
 require("./config/db");
 
+// import routes
+const userRoutes = require("./routes/userRoutes");
+
 const app = express();
 
 // logs
@@ -14,8 +17,7 @@ app.use(morgan("dev"));
 console.log("-----------------debug mongoose-----------");
 mongoose.set("debug", true);
 
-app.use((req, res) => {
-  res.json({ message: "Votre requête a bien été reçue !" });
-});
+// route user
+app.use("/api/user", userRoutes);
 
 module.exports = app;
