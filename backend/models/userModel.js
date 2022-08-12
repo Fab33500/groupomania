@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// verification de la validité de l'email
+const { isEmail } = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
