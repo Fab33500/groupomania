@@ -17,6 +17,14 @@ app.use(morgan("dev"));
 console.log("-----------------debug mongoose-----------");
 mongoose.set("debug", true);
 
+// analyse les requêtes
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 // route user
 app.use("/api/user", userRoutes);
 
