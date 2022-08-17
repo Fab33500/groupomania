@@ -82,4 +82,17 @@ userSchema.pre("save", async function (next) {
     .toString();
 });
 
+// comparer le password avec la bdd
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("Mot de passe incorrect");
+  }
+  throw Error(" Email incorrect");
+};
+
 module.exports = mongoose.model("user", userSchema);
