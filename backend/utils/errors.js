@@ -2,7 +2,7 @@ exports.signUpErrors = (err) => {
   let errors = { pseudo: "", email: "", password: "" };
 
   if (err.message.includes("pseudo"))
-    errors.pseudo = "Pseudo incorrect ou déjà pris";
+    errors.pseudo = "Pseudo doit comporter entre 3 et 20 caracteres";
 
   if (err.message.includes("email")) errors.email = "Email incorrect";
 
@@ -16,4 +16,8 @@ exports.signUpErrors = (err) => {
     errors.email = "Cet email est déjà enregistré";
 
   return errors;
+};
+
+exports.loginErrors = (err) => {
+  return (errors = { err: err.message });
 };
