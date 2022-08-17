@@ -1,5 +1,9 @@
 const userModel = require("../models/userModel");
 const { signUpErrors } = require("../utils/errors");
+const jwtToken = require("../middlewares/jwt");
+
+//chiffre email
+const cryptoJs = require("crypto-js");
 
 // -----------------------------------------
 
@@ -19,3 +23,33 @@ exports.signup = async (req, res) => {
     res.status(200).send(errors);
   }
 };
+
+// connexion user
+exports.login = async (req, res) => {
+  const { password } = req.body;
+
+  // crypter l'email pour comparaison avec email de la bdd
+  const emailCryptoJs = cryptoJs
+    .HmacSHA256(req.body.email, process.env.CRYPTOJS_EMAIL)
+    .toString();
+
+  console.log("------------>pass", emailCryptoJs);
+
+  try {
+    const user = await userModel.login(emailCryptoJs, password);
+    console.log("------------>pass2", emailCryptoJs, user.email);
+
+    if (emailCryptoJs === user.email) {
+      res.status(200).json({
+        user: user._id,
+        pseudo: user.pseudo,
+        token: jwtToken.generateTokenForUser(user),
+      });
+    }
+  } catch (err) {
+    return res.status(400).json(err.message);
+  }
+};
+
+// deconnexion user
+exports.logout = async (req, res) => {};
