@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-const { signUpErrors } = require("../utils/errors");
+const { signUpErrors, loginErrors } = require("../utils/errors");
 const jwtToken = require("../middlewares/jwt");
 
 //chiffre email
@@ -20,7 +20,7 @@ exports.signup = async (req, res) => {
     });
   } catch (err) {
     const errors = signUpErrors(err);
-    res.status(200).send(errors);
+    res.status(400).json(errors);
   }
 };
 
@@ -47,7 +47,8 @@ exports.login = async (req, res) => {
       });
     }
   } catch (err) {
-    return res.status(400).json(err.message);
+    const errors = loginErrors(err);
+    res.status(400).json(errors);
   }
 };
 
