@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
   {
     pseudo: {
       type: String,
-      minLength: 3,
+      minlength: 3,
       maxlength: 20,
       required: true,
       unique: true,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      minLength: 3,
+      minlength: 3,
       maxlength: 30,
     },
     lastname: {
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema(
     },
     job: {
       type: String,
-      minLength: 3,
+      minlength: 3,
       maxlength: 8,
     },
     bio: {
