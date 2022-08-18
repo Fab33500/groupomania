@@ -5,6 +5,9 @@ const password = require("../middlewares/passwordValidator");
 const authUserCtrl = require("../controllers/authUserCtrl.js");
 const userCtrl = require("../controllers/userCtrl");
 
+const authorization = require("../middlewares/auth");
+const isOwner = require("../middlewares/isOwner");
+
 const router = express.Router();
 
 // AuthUser
@@ -14,8 +17,8 @@ router.get("/logout", authUserCtrl.logout);
 
 // user
 router.get("/", userCtrl.getAllUsers);
-router.get("/:id", userCtrl.getOneUser);
-router.put("/:id", userCtrl.updateUser);
-router.delete("/:id", userCtrl.deleteUser);
+router.get("/:id", authorization, isOwner, userCtrl.getOneUser);
+router.put("/:id", authorization, isOwner, userCtrl.updateUser);
+router.delete("/:id", authorization, isOwner, userCtrl.deleteUser);
 
 module.exports = router;
