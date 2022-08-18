@@ -39,13 +39,11 @@ exports.login = async (req, res) => {
     const user = await userModel.login(emailCryptoJs, password);
     console.log("------------>pass2", emailCryptoJs, user.email);
 
-    if (emailCryptoJs === user.email) {
-      res.status(200).json({
-        user: user._id,
-        pseudo: user.pseudo,
-        token: jwtToken.generateTokenForUser(user),
-      });
-    }
+    res.status(200).json({
+      userId: user._id,
+      pseudo: user.pseudo,
+      token: jwtToken.generateTokenForUser(user),
+    });
   } catch (err) {
     const errors = loginErrors(err);
     res.status(400).json(errors);
@@ -54,3 +52,8 @@ exports.login = async (req, res) => {
 
 // deconnexion user
 exports.logout = async (req, res) => {};
+
+// test auth
+exports.test = async (req, res) => {
+  res.status(200).json({ msg: "vous etes authentifié avec : " });
+};
