@@ -2,12 +2,12 @@ const userModel = require("../models/userModel");
 const { signUpErrors, loginErrors } = require("../utils/errors");
 const jwtToken = require("../middlewares/jwt");
 
-//chiffre email
+// chiffre email
 const cryptoJs = require("crypto-js");
 
 // -----------------------------------------
 
-// inscription user
+// ---------------- inscription user ----------------------------//
 exports.signup = async (req, res) => {
   const { pseudo, email, password } = req.body;
   console.log("<<<<<<<<<<< --> ,", req.body);
@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-// connexion user
+// ---------------- connexion user ----------------------------//
 exports.login = async (req, res) => {
   const { password } = req.body;
 
@@ -50,10 +50,5 @@ exports.login = async (req, res) => {
   }
 };
 
-// deconnexion user
+// ---------------- deconnexion user ----------------------------//
 exports.logout = async (req, res) => {};
-
-// test auth
-exports.test = async (req, res) => {
-  res.status(200).json({ msg: "vous etes authentifié avec : " });
-};
