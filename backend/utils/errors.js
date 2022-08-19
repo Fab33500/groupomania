@@ -1,3 +1,6 @@
+// *************************** gestion des erreurs controller authUserctrl ********************
+
+// ------------------- erreur signup -------------------//
 exports.signUpErrors = (err) => {
   let errors = { pseudo: "", email: "", password: "" };
 
@@ -18,6 +21,21 @@ exports.signUpErrors = (err) => {
   return errors;
 };
 
+// ------------------- erreur login -------------------//
 exports.loginErrors = (err) => {
   return (errors = { err: err.message });
+};
+
+// *************************** gestion des erreurs middleware auth ********************
+// ------------------- erreur auth -------------------//
+exports.authErrors = (err) => {
+  return (errors = { err: "token d'authentification invalide !!" });
+};
+
+// *************************** gestion des erreurs middleware passwordvalidator ********************
+// ------------------- erreur passwordvalidator -------------------//
+exports.passwordValidatorErrors = (err) => {
+  return (errors = {
+    error: `le mot de passe n'est pas assez fort , il doit etre compose de : entre 5 et 10 caracteres, sans espace, minimum 1 Majuscules et 1 Minuscules, 1 chiffre,`,
+  });
 };

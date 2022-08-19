@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const { authErrors } = require("../utils/errors");
+
 module.exports = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
@@ -17,6 +19,7 @@ module.exports = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    res.status(401).json({ msg: "token d'authentification invalide" });
+    const errors = authErrors(err);
+    res.status(401).json(errors);
   }
 };

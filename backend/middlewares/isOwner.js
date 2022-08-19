@@ -1,5 +1,3 @@
-const userModel = require("../models/userModel");
-
 module.exports = async (req, res, next) => {
   // controle l'utilisateur qui fait la requete à user ID
   // si ce n'est pas le proprietaire:

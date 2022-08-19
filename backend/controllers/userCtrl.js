@@ -4,7 +4,6 @@ const userModel = require("../models/userModel");
 exports.getAllUsers = async (req, res) => {
   const users = await userModel.find().select("-password ");
   res.status(200).json(users);
-  console.log("<<<<<<<<<<<<<<", users[0]); //je suis ici le 18 aout au soir
 };
 
 // afficher un user

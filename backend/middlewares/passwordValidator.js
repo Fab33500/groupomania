@@ -1,4 +1,5 @@
 const passwordValidator = require("password-validator");
+const { passwordValidatorErrors } = require("../utils/errors");
 
 // creation du schema
 const passwordSchema = new passwordValidator();
@@ -26,8 +27,7 @@ module.exports = (req, res, next) => {
   if (passwordSchema.validate(req.body.password)) {
     next();
   } else {
-    return res.status(400).json({
-      error: `le mot de passe :[ ${req.body.password} ] n'est pas assez fort , il doit etre compose de : entre 5 et 10 caracteres, sans espace, minimum 1 Majuscules et 1 Minuscules, 1 chiffre,`,
-    });
+    const errors = passwordValidatorErrors();
+    return res.status(400).json(errors);
   }
 };
