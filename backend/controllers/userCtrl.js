@@ -27,8 +27,6 @@ exports.getOneUser = async (req, res) => {
 
 // mise à jour du compte user
 
-// a faire: si le compte n'existe pas en bd interdire la creation en faisant un update
-
 exports.updateUser = async (req, res) => {
   // verification si user existe
   const verifUser = await userModel.findById({ _id: req.params.id });
