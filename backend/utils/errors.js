@@ -39,3 +39,14 @@ exports.passwordValidatorErrors = (err) => {
     error: `le mot de passe n'est pas assez fort , il doit etre compose de : entre 5 et 10 caracteres, sans espace, minimum 1 Majuscules et 1 Minuscules, 1 chiffre,`,
   });
 };
+
+// *************************** gestion des erreurs middleware isOwner  ********************
+// ------------------- erreur isPostOwnerErrors -------------------//
+exports.isPostOwnerErrors = (err) => {
+  return (errors = { err: " vous n'etes pas le proprietaire de ce post!!" });
+};
+
+// ------------------- erreur isOwnerErrors -------------------//
+exports.isOwnerErrors = (err) => {
+  return (errors = { err: " vous n'etes pas le proprietaire du compte!!" });
+};
