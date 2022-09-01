@@ -1,16 +1,13 @@
 const postModel = require("../models/postModel");
+const { isOwnerErrors, isPostOwnerErrors } = require("../utils/errors");
 
 exports.isOwner = async (req, res, next) => {
   // controle l'utilisateur qui fait la requete à user ID
   // si ce n'est pas le proprietaire:
   if (req.params.id !== req.auth.userId) {
-    console.log("-----------req param", req.params.id);
-    console.log("req auth----------", req.auth.userId);
-    return res.status(401).json({
-      msg: " vous n'etes pas le proprietaire du compte!!",
-    });
+    const errors = isOwnerErrors();
+    return res.status(401).json(errors);
   }
-
   // si la requete est faite par le propriétaire
   else {
     next();
@@ -34,9 +31,8 @@ exports.isPostOwner = async (req, res, next) => {
       }
       // si la suppression n'est pas faite par le propriétaire
       else {
-        return res.status(403).json({
-          msg: " vous n'etes pas le proprietaire de ce post!!",
-        });
+        const errors = isPostOwnerErrors();
+        return res.status(403).json(errors);
       }
     })
     .catch((error) =>
