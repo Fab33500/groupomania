@@ -1,6 +1,4 @@
-const userModel = require("../models/userModel");
 const postModel = require("../models/postModel");
-const isOwner = require("../middlewares/isOwner");
 
 // -----------------------------------------
 
@@ -8,13 +6,9 @@ const isOwner = require("../middlewares/isOwner");
 exports.createPost = async (req, res) => {
   const newPost = new postModel({
     ...req.body,
-    // posterId: req.body.posterId,
-    // message: req.body.message,
-    // likers: [],
-    // comments: [],
   });
   console.log("<<<<<<newpost", newPost);
-  //   console.log("<<<<<<message", newPost.message);
+
   if (newPost.posterId === req.auth.userId) {
     try {
       const post = await newPost.save();
@@ -46,17 +40,10 @@ exports.readPost = async (req, res) => {
 // ---------------- modification d'un post ----------------------------//
 
 exports.updatePost = async (req, res) => {
-  // verification si user existe
-  // const verifUser = await userModel.findById({ _id: req.params.id });
-  // console.log("<<<<<<<<  verifUser", verifUser);
-
-  // if (verifUser) {
-  //   // return res.status(400).json("id unknow : " + req.params.id);
-  // }
-
   const uploadPost = {
     message: req.body.message,
   };
+
   postModel.findByIdAndUpdate(
     req.params.id,
     { $set: uploadPost },
@@ -65,7 +52,7 @@ exports.updatePost = async (req, res) => {
       if (!err) {
         res.send(docs);
       } else {
-        console.log("update error : " + err);
+        console.log("update error : " + err.value);
       }
     }
   );
@@ -75,9 +62,9 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   postModel.findByIdAndRemove(req.params.id, (err, docs) => {
     if (!err) {
-      res.send(docs);
+      res.send(`Le post : ${req.params.id} a été supprimé avec succes`);
     } else {
-      console.log("delete error : " + err);
+      console.log("Erreur de suppression : " + err);
     }
   });
 };

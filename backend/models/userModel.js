@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 //  variables d'environnement
 require("dotenv").config();
@@ -68,6 +69,9 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Appliquer le plugin uniqueValidator à userSchema
+userSchema.plugin(uniqueValidator);
 
 // crypter le mdp avant l'enregistrement dans la bdd
 userSchema.pre("save", async function (next) {
