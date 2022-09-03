@@ -1,4 +1,5 @@
 const postModel = require("../models/postModel");
+const userModel = require("../models/userModel");
 
 // -----------------------------------------
 
@@ -52,7 +53,8 @@ exports.updatePost = async (req, res) => {
       if (!err) {
         res.send(docs);
       } else {
-        console.log("update error : " + err.value);
+        console.log("erreur de modification : " + err.value);
+        res.send("erreur de modification : " + err.value);
       }
     }
   );
@@ -65,6 +67,64 @@ exports.deletePost = async (req, res) => {
       res.send(`Le post : ${req.params.id} a été supprimé avec succes`);
     } else {
       console.log("Erreur de suppression : " + err);
+      res.send("Erreur de suppression : " + err);
     }
   });
+};
+
+// ---------------- like d'un post ----------------------------//
+exports.likePost = async (req, res) => {
+  try {
+    await postModel
+      .findByIdAndUpdate(
+        req.params.id,
+        {
+          $addToSet: { likers: req.body.id },
+        },
+        { new: true }
+      )
+
+      .catch((err) => res.status(500).send({ message: err }));
+
+    await userModel
+      .findByIdAndUpdate(
+        req.body.id,
+        {
+          $addToSet: { likes: req.params.id },
+        },
+        { new: true }
+      )
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send({ message: err }));
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+};
+
+// ---------------- Unlike d'un post ----------------------------//
+exports.unLikePost = async (req, res) => {
+  try {
+    await postModel
+      .findByIdAndUpdate(
+        req.params.id,
+        {
+          $pull: { likers: req.body.id },
+        },
+        { new: true }
+      )
+      .catch((err) => res.status(500).send({ message: err }));
+
+    await userModel
+      .findByIdAndUpdate(
+        req.body.id,
+        {
+          $pull: { likes: req.params.id },
+        },
+        { new: true }
+      )
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send({ message: err }));
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 };
