@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const morgan = require("morgan");
 
@@ -8,6 +9,7 @@ require("./config/db");
 // import routes
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoute");
+const uploadRoutes = require("./routes/uploadRoute");
 
 const app = express();
 
@@ -44,5 +46,12 @@ app.use((req, res, next) => {
 app.use("/api/user", userRoutes);
 // route posts
 app.use("/api/post", postRoutes);
+
+// route upload
+app.use(
+  "/public/uploads/userAvatar",
+  express.static(path.join(__dirname, "public/uploads/userAvatar"))
+);
+app.use("/api/user", uploadRoutes);
 
 module.exports = app;
