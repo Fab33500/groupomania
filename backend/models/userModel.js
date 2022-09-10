@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "./uploads/profil/random-user.png",
+      default: "../public/uploads/default/user-default.gif",
     },
     job: {
       type: String,
