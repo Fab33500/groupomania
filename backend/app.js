@@ -52,6 +52,10 @@ app.use(
   "/public/uploads/userAvatar",
   express.static(path.join(__dirname, "public/uploads/userAvatar"))
 );
+app.use(
+  "/public/uploads/default",
+  express.static(path.join(__dirname, "public/uploads/default"))
+);
 app.use("/api/user", uploadRoutes);
 
 module.exports = app;
