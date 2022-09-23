@@ -4,15 +4,15 @@ const multer = require("../middlewares/multerConfig");
 
 const updateImgCtrl = require("../controllers/updateImgCtrl");
 
-const authorization = require("../middlewares/auth");
+// const authorization = require("../middlewares/auth");
 const { isOwner } = require("../middlewares/isOwner");
 
 // post
 
 router.put(
   "/upload_avatar/:id",
-  authorization,
-  isOwner,
+
+  // isOwner,
   multer,
   updateImgCtrl.updateProfil
 );
