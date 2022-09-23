@@ -19,7 +19,7 @@ exports.updateProfil = async (req, res) => {
       const filename = user.avatar.split("/public/uploads/userAvatar/")[1];
 
       if (req.file.fieldname) {
-        fs.unlink(`public/uploads/userAvatar//${filename}`, (error) => {
+        fs.unlink(`public/uploads/userAvatar/${filename}`, (error) => {
           if (error) console.log(error);
         });
 
