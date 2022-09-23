@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 
+const cookieParser = require("cookie-parser");
+
 const morgan = require("morgan");
 
 require("./config/db");
@@ -12,6 +14,7 @@ const postRoutes = require("./routes/postRoute");
 const uploadRoutes = require("./routes/uploadRoute");
 
 const app = express();
+const { checkUser, requireAuth } = require("./middlewares/auth");
 
 // logs
 app.use(morgan("dev"));
@@ -27,6 +30,7 @@ app.use(
     extended: true,
   })
 );
+app.use(cookieParser());
 
 // gestion errurs de CORS
 app.use((req, res, next) => {
@@ -40,6 +44,14 @@ app.use((req, res, next) => {
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
   next();
+});
+
+// jwt
+// app.use("*", checkUser);
+// app.post("*", checkUser);
+// app.put("*", checkUser);
+app.get("/jwtid", requireAuth, (req, res) => {
+  res.status(200).send(res.locals.user._id);
 });
 
 // route user
