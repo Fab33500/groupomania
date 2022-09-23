@@ -1,11 +1,12 @@
 const userModel = require("../models/userModel");
 const { signUpErrors, loginErrors } = require("../utils/errors");
-const jwtToken = require("../middlewares/jwt");
+const generateTokenForUser = require("../middlewares/jwt");
 
 // chiffre email
 const cryptoJs = require("crypto-js");
 
-// -----------------------------------------
+// durée du cookie
+const maxAge = 24 * 60 * 60 * 1000; // expire dans 24h
 
 // ---------------- inscription user ----------------------------//
 exports.signup = async (req, res) => {
@@ -20,7 +21,7 @@ exports.signup = async (req, res) => {
     });
   } catch (err) {
     const errors = signUpErrors(err);
-    res.status(400).json(errors);
+    res.status(400).json({ errors });
   }
 };
 
@@ -37,18 +38,26 @@ exports.login = async (req, res) => {
 
   try {
     const user = await userModel.login(emailCryptoJs, password);
-    console.log("------------>pass2", emailCryptoJs, user.email);
+
+    res.cookie("jwt", generateTokenForUser(user._id, user.isAdmin), {
+      httpOnly: true,
+      maxAge,
+    });
 
     res.status(200).json({
+      msg: "Vous etes bien connecté, " + user.pseudo,
       userId: user._id,
       pseudo: user.pseudo,
-      token: jwtToken.generateTokenForUser(user),
+      token: generateTokenForUser(user._id, user.isAdmin),
     });
   } catch (err) {
     const errors = loginErrors(err);
-    res.status(400).json(errors);
+    res.status(400).json({ errors });
   }
 };
 
 // ---------------- deconnexion user ----------------------------//
-exports.logout = async (req, res) => {};
+exports.logout = async (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/login"); // redirection sur la page de connexion
+};
