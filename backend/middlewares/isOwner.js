@@ -4,7 +4,9 @@ const { isOwnerErrors, isPostOwnerErrors } = require("../utils/errors");
 exports.isOwner = async (req, res, next) => {
   // controle l'utilisateur qui fait la requete à user ID
   // si ce n'est pas le proprietaire:
-  if (req.params.id !== req.auth.userId) {
+  if (req.params.id !== req.userToken.id) {
+    console.log("----------------isoner--------", req.userToken.id); // id recuperé du token
+    console.log("user token cookie ---------------", req.params.id);
     const errors = isOwnerErrors();
     return res.status(401).json(errors);
   }
