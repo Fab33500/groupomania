@@ -31,6 +31,9 @@ exports.updateUser = async (req, res) => {
   // verification si user existe
   const verifUser = await userModel.findById({ _id: req.params.id });
 
+  // const user = await userModel.findById(decodedToken.id);
+  console.log("xxxxxxxxxx--user---xxxxxxxxx", req.userToken.id); // id recuperé du token
+
   try {
     if (verifUser) {
       const user = await userModel.findByIdAndUpdate(
@@ -41,6 +44,8 @@ exports.updateUser = async (req, res) => {
         },
         { new: true, upsert: true, setDefaultsOnInsert: true }
       );
+
+      // res.send(req.userToken.id);// id recuperé du token
 
       res.status(200).json({
         msg: `Votre compte utilisateur numero: ${req.params.id} a été modifié`,
