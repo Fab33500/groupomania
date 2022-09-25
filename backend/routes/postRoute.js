@@ -5,13 +5,14 @@ const postCtrl = require("../controllers/postCtrl");
 
 // const authorization = require("../middlewares/auth");
 const { isPostOwner } = require("../middlewares/isOwner");
+const { checkUser } = require("../middlewares/auth");
 
 // post
 router.get("/", postCtrl.readPost);
-router.post("/", postCtrl.createPost);
-router.put("/:id", postCtrl.updatePost);
-router.delete("/:id", postCtrl.deletePost);
-router.patch("/like-post/:id", postCtrl.likePost);
-router.patch("/unlike-post/:id", postCtrl.unLikePost);
+router.post("/", checkUser, postCtrl.createPost);
+router.put("/:id", checkUser, isPostOwner, postCtrl.updatePost);
+router.delete("/:id", checkUser, isPostOwner, postCtrl.deletePost);
+router.patch("/like-post/:id", checkUser, postCtrl.likePost);
+router.patch("/unlike-post/:id", checkUser, postCtrl.unLikePost);
 
 module.exports = router;
