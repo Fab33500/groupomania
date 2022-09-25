@@ -22,7 +22,7 @@ exports.isPostOwner = async (req, res, next) => {
 
     .then((newPost) => {
       // controle l'utilisateur qui fait la requete à posterId du post
-      if (newPost.posterId === req.auth.userId) {
+      if (newPost.posterId === req.userToken.id) {
         if (!newPost.posterId) {
           return res.status(404).json({
             msg: "Post non trouvé",
