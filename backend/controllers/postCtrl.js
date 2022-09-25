@@ -1,5 +1,6 @@
 const postModel = require("../models/postModel");
 const userModel = require("../models/userModel");
+const ObjectID = require("mongoose").Types.ObjectId;
 
 // -----------------------------------------
 
@@ -9,8 +10,9 @@ exports.createPost = async (req, res) => {
     ...req.body,
   });
   console.log("<<<<<<newpost", newPost);
+  console.log("----------------isoner--------", req.userToken.id);
 
-  if (newPost.posterId === req.auth.userId) {
+  if (newPost.posterId === req.userToken.id) {
     try {
       const post = await newPost.save();
       res.status(201).json({
@@ -74,57 +76,62 @@ exports.deletePost = async (req, res) => {
 
 // ---------------- like d'un post ----------------------------//
 exports.likePost = async (req, res) => {
-  try {
-    await postModel
-      .findByIdAndUpdate(
+  if (!ObjectID.isValid(req.body.id)) {
+    res.status(400).send("Id : " + req.body.id + " est inconnu!");
+  } else {
+    try {
+      await postModel.findByIdAndUpdate(
         req.params.id,
         {
           $addToSet: { likers: req.body.id },
         },
         { new: true }
-      )
+      );
 
-      .catch((err) => res.status(500).send({ message: err }));
+      // .catch((err) => res.status(500).send({ message: err }));
 
-    await userModel
-      .findByIdAndUpdate(
-        req.body.id,
-        {
-          $addToSet: { likes: req.params.id },
-        },
-        { new: true }
-      )
-      .then((data) => res.send(data))
-      .catch((err) => res.status(500).send({ message: err }));
-  } catch (err) {
-    return res.status(400).send(err);
+      await userModel
+        .findByIdAndUpdate(
+          req.body.id,
+          {
+            $addToSet: { likes: req.params.id },
+          },
+          { new: true }
+        )
+        .then((data) => res.send({ data, msg: "ok" }))
+        .catch((err) => res.status(401).json(err));
+    } catch (err) {
+      res.status(400).json({ msg: "Id du post inccorect" });
+    }
   }
 };
 
 // ---------------- Unlike d'un post ----------------------------//
 exports.unLikePost = async (req, res) => {
-  try {
-    await postModel
-      .findByIdAndUpdate(
+  if (!ObjectID.isValid(req.body.id)) {
+    res.status(400).send("Id : " + req.body.id + " est inconnu!");
+  } else {
+    try {
+      await postModel.findByIdAndUpdate(
         req.params.id,
         {
           $pull: { likers: req.body.id },
         },
         { new: true }
-      )
-      .catch((err) => res.status(500).send({ message: err }));
+      );
 
-    await userModel
-      .findByIdAndUpdate(
-        req.body.id,
-        {
-          $pull: { likes: req.params.id },
-        },
-        { new: true }
-      )
-      .then((data) => res.send(data))
-      .catch((err) => res.status(500).send({ message: err }));
-  } catch (err) {
-    return res.status(400).send(err);
+      await userModel
+        .findByIdAndUpdate(
+          req.body.id,
+          {
+            $pull: { likes: req.params.id },
+          },
+          { new: true }
+        )
+        .then((data) => res.send(data))
+        .catch((err) => res.status(500).send({ message: err }));
+    } catch (err) {
+      res.status(400).json({ msg: "Id du post inccorect" });
+    }
   }
 };
