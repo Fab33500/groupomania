@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
       minLength: 3,
       maxlength: 30,
     },
-    avatar: {
+    image: {
       type: String,
       default: "../public/uploads/default/user-default.gif",
     },

@@ -11,7 +11,7 @@ const PostShema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
-    picture: {
+    image: {
       type: String,
     },
     likers: {
