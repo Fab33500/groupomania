@@ -98,7 +98,7 @@ exports.likePost = async (req, res) => {
           },
           { new: true }
         )
-        .then((data) => res.send({ data, msg: "ok" }))
+        .then((data) => res.send({ data }))
         .catch((err) => res.status(401).json(err));
     } catch (err) {
       res.status(400).json({ msg: "Id du post inccorect" });

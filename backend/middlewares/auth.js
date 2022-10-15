@@ -13,6 +13,7 @@ exports.checkUser = (req, res, next) => {
     jwt.verify(token, process.env.JWT_TOKEN, async (err, decodedToken) => {
       if (err) {
         res.locals.user = null;
+        // suppression du cookie si il y a une erreur
         res.cookie("jwt", "", { maxAge: 1 });
         next();
       } else {
