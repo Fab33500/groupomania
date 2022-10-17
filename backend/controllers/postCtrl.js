@@ -1,6 +1,7 @@
 const postModel = require("../models/postModel");
 const userModel = require("../models/userModel");
 const ObjectID = require("mongoose").Types.ObjectId;
+const fs = require("fs");
 
 // -----------------------------------------
 
@@ -64,14 +65,45 @@ exports.updatePost = async (req, res) => {
 
 // ---------------- suppression d'un post ----------------------------//
 exports.deletePost = async (req, res) => {
-  postModel.findByIdAndRemove(req.params.id, (err, docs) => {
-    if (!err) {
-      res.send(`Le post : ${req.params.id} a été supprimé avec succes`);
-    } else {
-      console.log("Erreur de suppression : " + err);
-      res.send("Erreur de suppression : " + err);
-    }
-  });
+  const post = await postModel.findById({ _id: req.params.id });
+  console.log("post message<<<<<<<<<<<  ", post.image);
+  if (post.likers.length) {
+    // suppression du poste like dans user si existant
+
+    await userModel.findByIdAndUpdate(
+      post.posterId,
+      {
+        $pull: { likes: req.params.id },
+      },
+      { new: true }
+    );
+  }
+  // suppression du post et de l'image du post
+  if (post.image) {
+    const filename = post.image.split("/public/uploads/img/")[1];
+    fs.unlink(`public/uploads/img/${filename}`, (error) => {
+      if (error) console.log(error);
+
+      postModel.findByIdAndRemove(req.params.id, (err, docs) => {
+        if (!err) {
+          res.send(`Le post : ${req.params.id} a été supprimé avec succes`);
+        } else {
+          console.log("Erreur de suppression : " + err);
+          res.send("Erreur de suppression : " + err);
+        }
+      });
+    });
+  } else {
+    // suppression du post si il n'a pas d'image
+    postModel.findByIdAndRemove(req.params.id, (err, docs) => {
+      if (!err) {
+        res.send(`Le post : ${req.params.id} a été supprimé avec succes`);
+      } else {
+        console.log("Erreur de suppression : " + err);
+        res.send("Erreur de suppression : " + err);
+      }
+    });
+  }
 };
 
 // ---------------- like d'un post ----------------------------//
