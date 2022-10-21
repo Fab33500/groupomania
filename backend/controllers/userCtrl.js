@@ -1,4 +1,6 @@
 const userModel = require("../models/userModel");
+const postModel = require("../models/postModel");
+const fs = require("fs");
 
 // afficher tous les users
 exports.getAllUsers = async (req, res) => {
@@ -63,15 +65,54 @@ exports.updateUser = async (req, res) => {
 
 // suppression du compte user
 exports.deleteUser = async (req, res) => {
+  //   // les likes de l'user supprimé restent actif
+  //   // ______________________________________
+  //   // const post1 = await postModel.find({ image: { $exists: true } });
+  //   //       console.log("post1_____________________   ", post1);
+  //   // ______________________________________
+
   try {
     const user = await userModel.findById({ _id: req.params.id });
-
+    const post = await postModel.find({
+      posterId: req.userToken.id,
+    });
+    if (user.image) {
+      const filename = user.image.split("/public/uploads/img/")[1];
+      // suppression de l'image dans le dossier img
+      fs.unlink(`public/uploads/img/${filename}`, (error) => {
+        if (error) console.log(error);
+      });
+    }
     // verifie si compte existe dans la bdd
     if (user) {
+      // // supprime l'utilisateur
       await userModel.remove({ _id: req.params.id }).exec();
       res
         .status(200)
         .json({ msg: `utilisateur numéro: ${req.params.id} supprimé` });
+
+      if (post) {
+        const postImage = await postModel.find({ image: { $exists: true } });
+
+        // recherche tous les posts
+        for (var i = 0; i < postImage.length; ++i) {
+          const postImageDelete = postImage[i];
+
+          // suppression des images dans le dossier img si elles appartienent à user effacé
+          if (postImageDelete.posterId === req.userToken.id) {
+            const filename = postImageDelete.image.split(
+              "/public/uploads/img/"
+            )[1];
+
+            fs.unlink(`public/uploads/img/${filename}`, (error) => {
+              if (error) console.log(error);
+            });
+          }
+        }
+
+        // supprime les posts de l'utilisateur
+        await postModel.remove({ posterId: req.userToken.id }).exec();
+      }
     } else {
       res.status(404).json({
         message: `Ce compte utilisateur numéro: ${req.params.id} n'existe plus`,
