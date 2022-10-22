@@ -65,12 +65,6 @@ exports.updateUser = async (req, res) => {
 
 // suppression du compte user
 exports.deleteUser = async (req, res) => {
-  //   // les likes de l'user supprimé restent actif
-  //   // ______________________________________
-  //   // const post1 = await postModel.find({ image: { $exists: true } });
-  //   //       console.log("post1_____________________   ", post1);
-  //   // ______________________________________
-
   try {
     const user = await userModel.findById({ _id: req.params.id });
     const post = await postModel.find({
