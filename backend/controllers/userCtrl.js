@@ -113,6 +113,6 @@ exports.deleteUser = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ msg: "l'user n'existe pas" });
   }
 };

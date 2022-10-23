@@ -31,6 +31,7 @@ exports.checkUser = (req, res, next) => {
   }
 };
 
+// verifier si l'user est connecté tout au long de sa visite
 exports.requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
 

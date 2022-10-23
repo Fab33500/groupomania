@@ -6,7 +6,7 @@ const authUserCtrl = require("../controllers/authUserCtrl.js");
 const userCtrl = require("../controllers/userCtrl");
 
 // const authorization = require("../middlewares/auth");
-const { isOwner } = require("../middlewares/isOwner");
+const { isOwner, isAdmin } = require("../middlewares/isOwner");
 const { checkUser } = require("../middlewares/auth");
 
 const router = express.Router();
@@ -20,6 +20,6 @@ router.get("/logout", checkUser, authUserCtrl.logout);
 router.get("/", checkUser, userCtrl.getAllUsers);
 router.get("/:id", checkUser, userCtrl.getOneUser);
 router.put("/:id", checkUser, isOwner, userCtrl.updateUser);
-router.delete("/:id", checkUser, isOwner, userCtrl.deleteUser);
+router.delete("/:id", checkUser, isAdmin, userCtrl.deleteUser);
 
 module.exports = router;

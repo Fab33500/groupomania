@@ -5,7 +5,7 @@ const multer = require("../middlewares/multerConfig");
 const updateImgCtrl = require("../controllers/updateImgCtrl");
 
 const { checkUser } = require("../middlewares/auth");
-const { isOwner, isPostOwner } = require("../middlewares/isOwner");
+const { isOwner, isPostOwner, isAdminPost } = require("../middlewares/isOwner");
 
 // upload avatar
 
@@ -21,7 +21,8 @@ router.put(
 router.put(
   "/upload_postImg/:id",
   checkUser,
-  isPostOwner,
+  // isPostOwner,
+  isAdminPost,
   multer,
   updateImgCtrl.updatePostImg
 );
