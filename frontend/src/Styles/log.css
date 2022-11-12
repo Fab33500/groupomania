@@ -1,0 +1,58 @@
+.nav-login {
+  background-color: #ffd7d7;
+  height: 50px;
+}
+
+#register,
+#login {
+  margin-top: 5px;
+  padding: 15px 0 15px 0;
+}
+
+.register,
+.login {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.active-btn {
+  color: #4e5166;
+  background-color: #ffd7d7;
+}
+
+/***************** grand ecran ***************************/
+
+@media (min-width: 767.98px) {
+  .nav-login {
+    background-color: #ffd7d7;
+    height: 50px;
+    border-radius: 20px;
+  }
+
+  #register,
+  #login {
+    margin-top: 5px;
+    padding: 5px 0 4px 0;
+  }
+
+  .register,
+  .login {
+    font-size: 25px;
+  }
+
+  .register {
+    border-radius: 20px 0 0 0;
+  }
+
+  .active-btn {
+    margin: 10px;
+  }
+
+  .active-btn-left {
+    margin: 5px;
+    border-radius: 20px 0 0 0;
+  }
+}

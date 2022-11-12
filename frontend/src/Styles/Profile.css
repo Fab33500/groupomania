@@ -1,0 +1,61 @@
+.profil-page img {
+  width: 100%;
+}
+
+.profile {
+  position: relative;
+}
+
+.profile-logo {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.sign-card {
+  background-color: #ffd7d7;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+/***************** grand ecran ***************************/
+
+@media (min-width: 767.98px) {
+  .sign-card {
+    border-radius: 5% 0 0 5%;
+    margin: 0;
+  }
+
+  .profil-page img {
+    border-radius: 0 20px 20px 0;
+  }
+
+  .profile {
+    background-image: url("../Assets/img/bgimg.jpg");
+    max-height: 1000px;
+    min-height: 745px;
+    width: 100%;
+    background-size: cover;
+  }
+
+  .profile-logo {
+    width: 25%;
+
+    top: 15px;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  .profil-page {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .sign-card {
+    margin-bottom: 0;
+  }
+}

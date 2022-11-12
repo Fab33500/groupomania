@@ -1,0 +1,28 @@
+.row {
+  --bs-gutter-x: 0rem;
+}
+
+.img-notfound {
+  margin-top: 20px;
+}
+
+img {
+  width: 60%;
+}
+
+.number {
+  font-style: italic;
+  font-size: 5rem;
+  font-weight: bold;
+  font-family: fantasy;
+}
+
+@media (min-width: 767.98px) {
+  .number {
+    font-size: 8rem;
+  }
+
+  img {
+    width: 100%;
+  }
+}

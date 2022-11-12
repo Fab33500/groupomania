@@ -1,8 +1,14 @@
 import "./Styles/App.css";
-import Header from "./Components/Header";
+
+import React from "react";
+import Routes from "./Components/Routes/Index";
 
 function App() {
-  return <div className="App">{<Header />}</div>;
+  return (
+    <>
+      <Routes />
+    </>
+  );
 }
 
 export default App;
